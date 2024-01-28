@@ -10,15 +10,15 @@ Source: https://sourceforge.net/projects/minidlna/files/
 
 Files: debian/*
 Copyright: 2010-2014, Benoît Knecht <benoit.knecht@fsfe.org>
-           2015-2020, Alexander GQ Gerasiov <gq@debian.org>
+           2015-2024, Alexander GQ Gerasiov <gq@debian.org>
 License: BSD-3-clause
 
 Files: albumart.? containers.? image_utils.? monitor.? metadata.?
        playlist.? scanner.? scanner_sqlite.h sendfile.h sql.? tivo_beacon.h
-       tivo_commands.? tivo_utils.? upnpsoap.h utils.? uuid.?
+       tivo_commands.? tivo_utils.? upnpsoap.h utils.? uuid.? monitor_inotify.c
        AUTHORS NEWS README TODO minidlna.conf linux/minidlna.init.d.script.tmpl
-       .gitignore ChangeLog COPYING
-Copyright: 2008-2017, Justin Maggard <jmaggard@users.sourceforge.net>
+       .gitignore ChangeLog COPYING buildroot/*
+Copyright: 2008-2023, Justin Maggard <jmaggard@users.sourceforge.net>
 License: GPL-2
 
 Files: minidlna.conf.5 minidlnad.8
@@ -101,7 +101,7 @@ Files: debian/minidlna.conf.5
 Copyright: 2008, Noel Butler <noelb@ausics.net>
            2009, Justin Maggard <jmaggard@users.sourceforge.net>
            2010-2012, Benoît Knecht <benoit.knecht@fsfe.org>
-           2015-2020, Alexander Gerasiov <gq@debian.org>
+           2015-2024, Alexander Gerasiov <gq@debian.org>
 License: GPL-2
 
 
