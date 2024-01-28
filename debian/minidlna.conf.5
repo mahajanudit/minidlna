@@ -279,6 +279,18 @@ By default, wide symlinks are not followed.
 Set to
 .Dq no
 to disable subtitles support for unknown clients.
+.It Cm enable_thumbnail
+Set to
+.Dq yes
+to enable thumbnails generation for video files.  To use this option, thumbnail generation must be enable at compile time. See the following options to set thumbnails parameters.
+.It Cm thumbnail_width
+The width of the thumbnail image in pixels. Large images takes more time to generate. The default width is 160.
+.It Cm thumbnail_quality
+Thumbnail Image quality. The default value is 8.
+.It Cm enable_thumbnail_filmstrip
+Set to
+.Dq yes
+to make thumbnails have a film strip.
 .El
 .Sh FILES
 .Bl -tag -width Ds
