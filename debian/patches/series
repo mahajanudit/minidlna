@@ -1,6 +1,5 @@
 01-run-instead-of-var-run.patch
 03-make-sure-the-database-is-closed-after-scanning.patch
-05-update-help-output.patch
 07-fix-multi-artist-album-handling.patch
 08-Fix-testupnpdescgen-build.patch
 10-do-not-close-socket-on-sighup.patch
