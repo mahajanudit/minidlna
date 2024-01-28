@@ -22,5 +22,5 @@
 
 # Additional options that are passed to the daemon
 # We pass -r option to do soft non-destructive rebuild on every start-up.
-# If your systerm restarts often, you might want to remove this.
+# If your system restarts often, you might want to remove this.
 #DAEMON_OPTS="-r"
