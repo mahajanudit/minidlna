@@ -4,7 +4,8 @@ minidlna (1.3.3+dfsg-1) unstable; urgency=medium
   * Add a bit of providence to quilt patches/15-thumbnails.patch
 
   [ Alexander Gerasiov ]
-  * debian/minidlna.default: Fix typo. Thanks Wesley Schwengle. Closes: #1060649.
+  * debian/minidlna.default: Fix typo. Thanks Wesley Schwengle.
+    Closes: #1060649.
   * debian/minidlna.conf{,.5}: Update to latest release.
   * debian/minidlna.conf{,.5}: Add thumbnails related options.
   * Remove outdated 05-update-help-output.patch.
