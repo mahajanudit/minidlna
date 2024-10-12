@@ -7,7 +7,7 @@ Subject: do-not-close-socket-on-sighup
  1 file changed, 2 deletions(-)
 
 diff --git a/minidlna.c b/minidlna.c
-index 47ca712..37462ac 100644
+index 4f972f0..1e4b0a5 100644
 --- a/minidlna.c
 +++ b/minidlna.c
 @@ -215,8 +215,6 @@ sighup(int sig)

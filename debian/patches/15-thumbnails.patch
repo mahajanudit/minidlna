@@ -157,7 +157,7 @@ index 11421a5..2c3278b 100644
  case "$target_os" in
  	darwin*)
 diff --git a/minidlna.c b/minidlna.c
-index 6d2d06b..74e1fac 100644
+index 27f19eb..5c19a34 100644
 --- a/minidlna.c
 +++ b/minidlna.c
 @@ -589,6 +589,11 @@ init(int argc, char **argv)

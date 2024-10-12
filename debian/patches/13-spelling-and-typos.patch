@@ -8,7 +8,7 @@ Subject: spelling and typos
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/minidlna.c b/minidlna.c
-index 37462ac..6d2d06b 100644
+index 1e4b0a5..27f19eb 100644
 --- a/minidlna.c
 +++ b/minidlna.c
 @@ -525,7 +525,7 @@ static void init_nls(void)

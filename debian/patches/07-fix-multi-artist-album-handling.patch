@@ -1,6 +1,7 @@
 From: Florian Will <florian.will@gmail.com>
 Date: Mon, 9 Mar 2015 13:18:56 +0300
 Subject: [PATCH] Ignore artist when looking up existing container
+
 Forwarded: http://sourceforge.net/p/minidlna/bugs/246/
 Bug-Debian: https://bugs.debian.org/734383
 

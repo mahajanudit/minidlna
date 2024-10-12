@@ -1,7 +1,8 @@
-From 243cf2dd27ebcaf4ef1093c79b96077378d52018 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Robert-Andr=C3=A9=20Mauchin?= <zebob.m@gmail.com>
+From: =?utf-8?q?Robert-Andr=C3=A9_Mauchin?= <zebob.m@gmail.com>
 Date: Sat, 4 May 2024 18:36:58 +0200
 Subject: [PATCH] Add compatibility with FFMPEG 7.0
+
+From 243cf2dd27ebcaf4ef1093c79b96077378d52018 Mon Sep 17 00:00:00 2001
 Origin: other, https://sourceforge.net/u/eclipseo/minidlna/ci/243cf2dd27ebcaf4ef1093c79b96077378d52018/
 Bug-Debian: https://bugs.debian.org/1072435
 
@@ -35,6 +36,3 @@ index b69752c..fae094b 100644
  #define lav_width(s) s->codecpar->width
  #define lav_height(s) s->codecpar->height
  #define lav_profile(s) s->codecpar->profile
--- 
-2.45.2
-
