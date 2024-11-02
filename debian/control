@@ -14,7 +14,7 @@ Build-Depends: debhelper-compat (= 13),
                libsqlite3-dev,
                libvorbis-dev,
 	       libffmpegthumbnailer-dev,
-Standards-Version: 4.6.2
+Standards-Version: 4.7.0
 Rules-Requires-Root: no
 Homepage: https://sourceforge.net/projects/minidlna/
 Vcs-Git: https://salsa.debian.org/debian/minidlna.git
