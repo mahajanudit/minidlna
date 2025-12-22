@@ -130,7 +130,7 @@ dir_vnode_process(struct event *ev, u_int fflags)
 					    "strdup error");
 					continue;
 				}
-				esc_name = modifyString(esc_name, "&", "&amp;amp;", 0);
+				esc_name = escape_tag(entry->d_name, 1);
 				monitor_insert_directory(1, esc_name, tmp_path);
 				free(esc_name);
 			}
@@ -196,7 +196,7 @@ dir_vnode_process(struct event *ev, u_int fflags)
 					    "strdup error");
 					continue;
 				}
-				esc_name = modifyString(esc_name, "&", "&amp;amp;", 0);
+				esc_name = escape_tag(entry->d_name, 1);
 				if (S_ISDIR(st.st_mode))
 					monitor_insert_directory(1, esc_name, tmp_path);
 				else

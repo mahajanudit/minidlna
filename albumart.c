@@ -29,6 +29,7 @@
 #include <libgen.h>
 #include <setjmp.h>
 #include <errno.h>
+#include <sys/wait.h>
 
 #include <jpeglib.h>
 
@@ -263,6 +264,61 @@ end_art:
 }
 
 static char *
+generate_ffmpeg_thumb(const char *path)
+{
+	pid_t pid;
+	int status;
+	char *cache_file = NULL;
+	char *cache_dir;
+	static int ffthumb_missing_logged = 0;
+
+	if( !is_video(path) )
+		return NULL;
+
+	/* Reuse cached thumb if we already made one */
+	if( art_cache_exists(path, &cache_file) )
+		return cache_file;
+
+	/* art_cache_exists allocated cache_file even if it didn't exist */
+	cache_dir = strdup(cache_file);
+	make_dir(dirname(cache_dir), S_IRWXU|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH);
+	free(cache_dir);
+
+	pid = fork();
+	if( pid == 0 )
+	{
+		execlp("ffmpegthumbnailer", "ffmpegthumbnailer",
+		       "-i", path,
+		       "-o", cache_file,
+		       "-s", "320",
+		       "-q", "8",
+		       "-f",
+		       (char *)NULL);
+		_exit(127);
+	}
+	else if( pid < 0 )
+	{
+		DPRINTF(E_ERROR, L_METADATA, "fork() failed for ffmpegthumbnailer [%s]\n", strerror(errno));
+		free(cache_file);
+		return NULL;
+	}
+
+	if( waitpid(pid, &status, 0) < 0 || status != 0 )
+	{
+		if( WIFEXITED(status) && WEXITSTATUS(status) == 127 && !ffthumb_missing_logged )
+		{
+			DPRINTF(E_WARN, L_METADATA, "ffmpegthumbnailer not found in PATH; skipping thumbnail generation\n");
+			ffthumb_missing_logged = 1;
+		}
+		remove(cache_file);
+		free(cache_file);
+		return NULL;
+	}
+
+	return cache_file;
+}
+
+static char *
 check_for_album_file(const char *path)
 {
 	char file[MAXPATHLEN];
@@ -361,6 +417,16 @@ find_album_art(const char *path, uint8_t *image_data, int image_size)
 		if( !ret )
 		{
 			if( sql_exec(db, "INSERT into ALBUM_ART (PATH) VALUES ('%q')", album_art) == SQLITE_OK )
+				ret = sqlite3_last_insert_rowid(db);
+		}
+	}
+	else if( is_video(path) )
+	{
+		album_art = generate_ffmpeg_thumb(path);
+		if( album_art )
+		{
+			ret = sql_get_int_field(db, "SELECT ID from ALBUM_ART where PATH = '%q'", album_art);
+			if( !ret && sql_exec(db, "INSERT into ALBUM_ART (PATH) VALUES ('%q')", album_art) == SQLITE_OK )
 				ret = sqlite3_last_insert_rowid(db);
 		}
 	}

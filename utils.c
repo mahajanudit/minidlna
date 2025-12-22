@@ -211,18 +211,60 @@ unescape_tag(const char *tag, int force_alloc)
 	return esc_tag;
 }
 
+static int
+contains_catia_pua(const char *tag)
+{
+	const unsigned char *p = (const unsigned char *)tag;
+
+	while (*p)
+	{
+		if (p[0] == 0xEF && p[1] == 0x80 && p[2] == 0xA9)
+			return 1;
+		p++;
+	}
+
+	return 0;
+}
+
+static void
+demangle_catia(char *tag)
+{
+	const unsigned char *src = (const unsigned char *)tag;
+	char *dst = tag;
+
+	while (*src)
+	{
+		if (src[0] == 0xEF && src[1] == 0x80 && src[2] == 0xA9)
+		{
+			*dst++ = '.';
+			src += 3;
+			continue;
+		}
+		*dst++ = (char)*src++;
+	}
+	*dst = '\0';
+}
+
 char *
 escape_tag(const char *tag, int force_alloc)
 {
+	int needs_escape, needs_demangle;
 	char *esc_tag = NULL;
 
-	if( strchr(tag, '&') || strchr(tag, '<') || strchr(tag, '>') || strchr(tag, '"') )
+	needs_escape = strchr(tag, '&') || strchr(tag, '<') || strchr(tag, '>') || strchr(tag, '"');
+	needs_demangle = contains_catia_pua(tag);
+
+	if( needs_escape || needs_demangle )
 	{
 		esc_tag = strdup(tag);
-		esc_tag = modifyString(esc_tag, "&", "&amp;amp;", 0);
-		esc_tag = modifyString(esc_tag, "<", "&amp;lt;", 0);
-		esc_tag = modifyString(esc_tag, ">", "&amp;gt;", 0);
-		esc_tag = modifyString(esc_tag, "\"", "&amp;quot;", 0);
+		demangle_catia(esc_tag);
+	}
+	if( needs_escape )
+	{
+		esc_tag = modifyString(esc_tag, "&", "&amp;", 0);
+		esc_tag = modifyString(esc_tag, "<", "&lt;", 0);
+		esc_tag = modifyString(esc_tag, ">", "&gt;", 0);
+		esc_tag = modifyString(esc_tag, "\"", "&quot;", 0);
 	}
 	else if( force_alloc )
 		esc_tag = strdup(tag);

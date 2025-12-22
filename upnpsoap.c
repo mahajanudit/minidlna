@@ -1236,6 +1236,8 @@ callback(void *args, int argc, char **argv, char **azColName)
 	}
 	else if( strncmp(class, "container", 9) == 0 )
 	{
+		long long album_art_id = 0;
+
 		ret = strcatf(str, "&lt;container id=\"%s\" parentID=\"%s\" restricted=\"1\" ", id, parent);
 		if( passed_args->filter & FILTER_SEARCHABLE ) {
 			ret = strcatf(str, "searchable=\"%d\" ", check_magic_container(id, passed_args->flags) ? 0 : 1);
@@ -1267,13 +1269,19 @@ callback(void *args, int argc, char **argv, char **azColName)
 		if( artist && (passed_args->filter & FILTER_UPNP_ARTIST) ) {
 			ret = strcatf(str, "&lt;upnp:artist&gt;%s&lt;/upnp:artist&gt;", artist);
 		}
-		if( NON_ZERO(album_art) && (passed_args->filter & FILTER_UPNP_ALBUMARTURI) ) {
+		if( album_art )
+			album_art_id = strtoll(album_art, NULL, 10);
+		if( album_art_id == 0 )
+			album_art_id = sql_get_int_field(db, "SELECT ALBUM_ART from DETAILS where ID in (SELECT DETAIL_ID from OBJECTS where PARENT_ID = '%q' and DETAIL_ID is not null) and ALBUM_ART is not null limit 1", id);
+		if( album_art_id && (passed_args->filter & FILTER_UPNP_ALBUMARTURI) ) {
+			char album_art_buf[32];
+			snprintf(album_art_buf, sizeof(album_art_buf), "%lld", album_art_id);
 			ret = strcatf(str, "&lt;upnp:albumArtURI ");
 			if( passed_args->filter & FILTER_UPNP_ALBUMARTURI_DLNA_PROFILEID ) {
 				ret = strcatf(str, "dlna:profileID=\"JPEG_TN\" xmlns:dlna=\"urn:schemas-dlna-org:metadata-1-0/\"");
 			}
 			ret = strcatf(str, "&gt;http://%s:%d/AlbumArt/%s-%s.jpg&lt;/upnp:albumArtURI&gt;",
-			                   lan_addr[passed_args->iface].str, runtime_vars.port, album_art, detailID);
+			                   lan_addr[passed_args->iface].str, runtime_vars.port, album_art_buf, detailID);
 		}
 		if( passed_args->filter & FILTER_AV_MEDIA_CLASS ) {
 			char class;
@@ -2326,4 +2334,3 @@ ExecuteSoapAction(struct upnphttp * h, const char * action, int n)
 
 	SoapError(h, 401, "Invalid Action");
 }
-
