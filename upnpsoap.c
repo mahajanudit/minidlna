@@ -1192,6 +1192,7 @@ callback(void *args, int argc, char **argv, char **azColName)
 		if( NON_ZERO(album_art) )
 		{
 			/* Video and audio album art is handled differently */
+			/* Add <res> element for video thumbnails when requested */
 			if( *mime == 'v' && (passed_args->filter & FILTER_RES) && !(passed_args->flags & FLAG_MS_PFS) ) {
 				ret = strcatf(str, "&lt;res protocolInfo=\"http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_TN\"&gt;"
 				                   "http://%s:%d/AlbumArt/%s-%s.jpg"
@@ -1206,7 +1207,10 @@ callback(void *args, int argc, char **argv, char **azColName)
 							   DLNA_FLAG_DLNA_V1_5|DLNA_FLAG_TM_B|DLNA_FLAG_TM_I, 0,
 							   lan_addr[passed_args->iface].str, runtime_vars.port, album_art, detailID);
 				}
-			} else if( passed_args->filter & FILTER_UPNP_ALBUMARTURI ) {
+			}
+			/* Add <upnp:albumArtURI> for audio or when client requests it */
+			/* Note: Also adding for videos to improve DLNA client compatibility */
+			if( passed_args->filter & FILTER_UPNP_ALBUMARTURI ) {
 				ret = strcatf(str, "&lt;upnp:albumArtURI");
 				if( passed_args->filter & FILTER_UPNP_ALBUMARTURI_DLNA_PROFILEID ) {
 					ret = strcatf(str, " dlna:profileID=\"JPEG_TN\" xmlns:dlna=\"urn:schemas-dlna-org:metadata-1-0/\"");
