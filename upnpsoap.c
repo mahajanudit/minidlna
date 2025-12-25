@@ -1275,8 +1275,11 @@ callback(void *args, int argc, char **argv, char **azColName)
 		}
 		if( album_art )
 			album_art_id = strtoll(album_art, NULL, 10);
-		if( album_art_id == 0 )
-			album_art_id = sql_get_int_field(db, "SELECT ALBUM_ART from DETAILS where ID in (SELECT DETAIL_ID from OBJECTS where PARENT_ID = '%q' and DETAIL_ID is not null) and ALBUM_ART is not null limit 1", id);
+		/* Disabled: Don't fallback to first video's thumbnail for folders
+		 * Folders should only show thumbnails if they have Folder.jpg
+		 * if( album_art_id == 0 )
+		 *     album_art_id = sql_get_int_field(db, "SELECT ALBUM_ART from DETAILS where ID in (SELECT DETAIL_ID from OBJECTS where PARENT_ID = '%q' and DETAIL_ID is not null) and ALBUM_ART is not null limit 1", id);
+		 */
 		if( album_art_id && (passed_args->filter & FILTER_UPNP_ALBUMARTURI) ) {
 			char album_art_buf[32];
 			snprintf(album_art_buf, sizeof(album_art_buf), "%lld", album_art_id);
