@@ -2,7 +2,7 @@
 # Fetch series/movie artwork from TheMovieDB (TMDB)
 # Downloads official posters and saves as Folder.jpg
 
-set -e
+# Don't use 'set -e' - arithmetic operations like ((var++)) return 1 when var=0
 
 # TMDB API Configuration
 TMDB_API_KEY="f5687aa66f6db8631c4085add136a59d"
@@ -231,7 +231,7 @@ process_folder() {
         if [ "$VERBOSE" = true ]; then
             echo -e "  ${YELLOW}⏭ Skipping:${NC} $folder_name (Folder.jpg exists)"
         fi
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
         return
     fi
 
@@ -255,7 +255,7 @@ process_folder() {
 
     if [ -z "$result" ]; then
         echo -e "     ${RED}❌ Not found on TMDB${NC}"
-        ((NOT_FOUND++))
+        NOT_FOUND=$((NOT_FOUND + 1))
         return
     fi
 
@@ -272,10 +272,10 @@ process_folder() {
         if [ "$DRY_RUN" = false ]; then
             echo -e "     ${GREEN}✅ Saved:${NC} Folder.jpg"
         fi
-        ((DOWNLOADED++))
+        DOWNLOADED=$((DOWNLOADED + 1))
     else
         echo -e "     ${RED}❌ Download failed${NC}"
-        ((ERRORS++))
+        ERRORS=$((ERRORS + 1))
         return
     fi
 
@@ -321,7 +321,7 @@ process_seasons() {
                 if [ "$DRY_RUN" = false ]; then
                     echo -e "        ${GREEN}✅ Saved:${NC} $season_name/Folder.jpg"
                 fi
-                ((DOWNLOADED++))
+                DOWNLOADED=$((DOWNLOADED + 1))
             fi
         else
             if [ "$VERBOSE" = true ]; then
