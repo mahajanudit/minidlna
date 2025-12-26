@@ -363,7 +363,7 @@ main() {
 
         # Skip hidden folders and common non-media folders
         case "$category_name" in
-            .*|lost+found|@*|#*|\$*)
+            .*|lost+found|"@"*|"#"*|'$'*)
                 continue
                 ;;
         esac
