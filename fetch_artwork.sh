@@ -124,8 +124,8 @@ clean_title() {
     title=$(echo "$title" | sed 's/ Complete$//i')
     title=$(echo "$title" | sed 's/ Collection$//i')
 
-    # Trim whitespace
-    title=$(echo "$title" | xargs)
+    # Trim whitespace (using sed instead of xargs to handle special chars)
+    title=$(echo "$title" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
     echo "$title"
 }
@@ -133,7 +133,7 @@ clean_title() {
 # URL encode a string
 urlencode() {
     local string="$1"
-    python3 -c "import urllib.parse; print(urllib.parse.quote('''$string'''))"
+    python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$string"
 }
 
 # Search TMDB for TV show
