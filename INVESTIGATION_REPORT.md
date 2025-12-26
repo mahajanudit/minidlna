@@ -110,7 +110,7 @@ If the count is **0** but you have videos indexed, you need to rescan.
 **Solution**: Force a database rescan:
 ```bash
 sudo systemctl stop minidlna
-sudo minidlna -R
+sudo minidlnad -R
 sudo systemctl start minidlna
 ```
 
@@ -195,7 +195,7 @@ which minidlna
 
 ```bash
 # This rebuilds the entire database with your new thumbnail code
-sudo minidlna -R
+sudo minidlnad -R
 ```
 
 **Note**: For large media libraries, this can take 10-60 minutes. Watch progress:

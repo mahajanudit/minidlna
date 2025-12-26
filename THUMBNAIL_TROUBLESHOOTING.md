@@ -26,7 +26,7 @@ sqlite3 /var/cache/minidlna/files.db \
 **If the count is 0**, you need to force a rescan after adding the ffmpegthumbnailer code:
 ```bash
 sudo systemctl stop minidlna
-sudo minidlna -R  # Force database rebuild
+sudo minidlnad -R  # Force database rebuild
 sudo systemctl start minidlna
 ```
 
@@ -236,7 +236,7 @@ Or if you're testing locally:
 
 ### 1. Forgot to Rescan After Adding Code
 **Symptom**: Thumbnails exist in cache, but videos have NULL ALBUM_ART in database
-**Fix**: Run `sudo minidlna -R`
+**Fix**: Run `sudo minidlnad -R`
 
 ### 2. ffmpegthumbnailer Not Installed
 **Symptom**: Log shows "ffmpegthumbnailer not found in PATH"
@@ -315,7 +315,7 @@ If this works but your automatic generation doesn't, the issue is in the scannin
 1. Run `./debug_thumbnails.sh` to identify the specific issue
 2. Follow the debugging steps above based on what the script reports
 3. Rebuild and reinstall MiniDLNA with the updated `upnpsoap.c`
-4. Force a rescan: `sudo minidlna -R`
+4. Force a rescan: `sudo minidlnad -R`
 5. Test with your DLNA client
 
 If you still have issues, share the output of:

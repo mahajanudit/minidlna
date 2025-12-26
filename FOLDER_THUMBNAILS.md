@@ -48,7 +48,7 @@ sudo ./install_and_test.sh
 sudo ./generate_folder_thumbnails.sh
 
 # 3. Force MiniDLNA to pick up the new Folder.jpg files
-sudo minidlna -R
+sudo minidlnad -R
 
 # 4. Restart service
 sudo systemctl restart minidlna
@@ -122,7 +122,7 @@ Skipped: 2
 ✅ Folder thumbnails created!
 
 Next steps:
-1. Force MiniDLNA to rescan: sudo minidlna -R
+1. Force MiniDLNA to rescan: sudo minidlnad -R
 2. Restart service: sudo systemctl restart minidlna
 3. Refresh your DLNA client
 ```
@@ -144,7 +144,7 @@ If you prefer to create your own custom folder thumbnails:
 
 ### "Skipping (no thumbnails generated yet)"
 - Video thumbnails aren't generated for that folder yet
-- Force rescan: `sudo minidlna -R`
+- Force rescan: `sudo minidlnad -R`
 - Wait for scan to complete
 
 ### ImageMagick "convert: not authorized"
@@ -159,7 +159,7 @@ If you get permission errors, edit `/etc/ImageMagick-6/policy.xml`:
 
 ### Collages look wrong
 - Check thumbnail quality: `ls -lh /var/cache/minidlna/art_cache/`
-- Regenerate video thumbnails: `sudo minidlna -R`
+- Regenerate video thumbnails: `sudo minidlnad -R`
 - Try the script again
 
 ## Performance

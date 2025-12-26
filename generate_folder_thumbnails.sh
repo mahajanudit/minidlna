@@ -153,7 +153,7 @@ if [ "$CREATED" -gt 0 ]; then
     echo "✅ Folder thumbnails created!"
     echo ""
     echo "Next steps:"
-    echo "1. Force MiniDLNA to rescan: sudo minidlna -R"
+    echo "1. Force MiniDLNA to rescan: sudo minidlnad -R"
     echo "2. Restart service: sudo systemctl restart minidlna"
     echo "3. Refresh your DLNA client"
 fi

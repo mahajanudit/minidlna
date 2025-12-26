@@ -134,7 +134,7 @@ if [ "$VIDEO_WITH_ART" -eq 0 ] && [ "$VIDEO_COUNT" -gt 0 ]; then
     echo -e "${YELLOW}⚠ No videos have album art assigned.${NC}"
     echo ""
     echo "Try the following:"
-    echo "  1. Force a database rescan: sudo minidlna -R"
+    echo "  1. Force a database rescan: sudo minidlnad -R"
     echo "  2. Check that ffmpegthumbnailer is installed and in PATH"
     echo "  3. Check file permissions on $ART_CACHE_DIR"
     echo "  4. Increase log level in /etc/minidlna.conf:"

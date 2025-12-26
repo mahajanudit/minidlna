@@ -30,7 +30,7 @@ sudo make install
 echo ""
 echo "Step 4: Forcing database rescan (this will take time)..."
 echo "This rebuilds the database and generates thumbnails for all videos."
-sudo minidlna -R
+sudo minidlnad -R
 
 # Start service
 echo ""
