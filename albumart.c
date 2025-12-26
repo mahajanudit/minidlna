@@ -417,23 +417,29 @@ find_album_art(const char *path, uint8_t *image_data, int image_size)
 	char *album_art = NULL;
 	int64_t ret = 0;
 
-	if( (image_size && (album_art = check_embedded_art(path, image_data, image_size))) ||
-	    (album_art = check_for_album_file(path)) )
+	/* First, check for embedded art (works for any file type) */
+	if( image_size )
+		album_art = check_embedded_art(path, image_data, image_size);
+
+	/* For videos, try to generate a thumbnail BEFORE falling back to Folder.jpg
+	 * This ensures each video gets its own frame thumbnail, while Folder.jpg
+	 * is reserved for folder/container thumbnails */
+	if( !album_art && is_video(path) )
+		album_art = generate_ffmpeg_thumb(path);
+
+	/* Fall back to folder-based art files (Folder.jpg, Cover.jpg, etc.)
+	 * This is used for: folders, audio files, images, or videos where
+	 * thumbnail generation failed */
+	if( !album_art )
+		album_art = check_for_album_file(path);
+
+	/* Store the album art path in the database */
+	if( album_art )
 	{
 		ret = sql_get_int_field(db, "SELECT ID from ALBUM_ART where PATH = '%q'", album_art);
 		if( !ret )
 		{
 			if( sql_exec(db, "INSERT into ALBUM_ART (PATH) VALUES ('%q')", album_art) == SQLITE_OK )
-				ret = sqlite3_last_insert_rowid(db);
-		}
-	}
-	else if( is_video(path) )
-	{
-		album_art = generate_ffmpeg_thumb(path);
-		if( album_art )
-		{
-			ret = sql_get_int_field(db, "SELECT ID from ALBUM_ART where PATH = '%q'", album_art);
-			if( !ret && sql_exec(db, "INSERT into ALBUM_ART (PATH) VALUES ('%q')", album_art) == SQLITE_OK )
 				ret = sqlite3_last_insert_rowid(db);
 		}
 	}
